@@ -77,7 +77,7 @@ def get_saliency(vgg, logit_type):
 
 def visualize_vgg():
     sal_map_type = "GuidedBackprop_maxlogit"  # change it to get different visualizations
-    load_weights = 'only'  # how to load the weights of vgg16
+    load_weights = 'random'  # how to load the weights of vgg16
     image_name = 'tabby'  # or using a list to deal with multiple images
 
     data_dir = "../data"
