@@ -5,7 +5,6 @@ We suggest you run the platform under Python 3.6+ with following libs:
 * **TensorFlow >= 1.4.0**
 * Numpy 1.12.1
 * Scipy 0.19.0
-* NLTK 3.2.3
 
 ## Get Started
 
