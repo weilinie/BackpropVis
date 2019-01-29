@@ -58,7 +58,7 @@ class FC(object):
             self.layers_dic['fc1'] = self.fc1
 
         # fc2
-        with tf.name_scope('fc3') as scope:
+        with tf.name_scope('fc2') as scope:
             fc2w = tf.Variable(tf.truncated_normal([fc_len, self.n_labels],
                                                          dtype=tf.float32,
                                                          stddev=1e1), name='weights')

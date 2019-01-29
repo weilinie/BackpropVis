@@ -17,10 +17,16 @@ image_dict = {'tabby': 281, 'laska': 356, 'mastiff': 243, 'panda': 388}
 def _GuidedReluGrad(op, grad):
     return tf.where(0. < grad, gen_nn_ops._relu_grad(grad, op.outputs[0]), tf.zeros(tf.shape(grad)))
 
+#ADD DECONV
+@ops.RegisterGradient("DeconvRelu")
+def _GuidedReluGrad(op, grad):
+    return tf.where(0. < grad, grad, tf.zeros(tf.shape(grad)))
+
 
 def visualize_convnet():
-    sal_map_type = "GuidedBackprop_maxlogit"  # change it to get different visualizations
+    sal_map_type = "Deconv_maxlogit"  # change it to get different visualizations
     image_name = 'tabby'  # or using a list to deal with multiple images
+    max_pool = True  #indicate whether to add a max-pooling layer
 
     data_dir = "../data"
     save_dir = "results"
@@ -56,11 +62,14 @@ def visualize_convnet():
     if sal_map_type.split('_')[0] == 'GuidedBackprop':
         eval_graph = tf.get_default_graph()
         with eval_graph.gradient_override_map({'Relu': 'GuidedRelu'}):
-            conv_model = Convnet(sess)
-
+            conv_model = Convnet(sess,max_pool)
+    # ADD DECONV
+    elif sal_map_type.split('_')[0] == 'Deconv':
+        eval_graph = tf.get_default_graph()
+        with eval_graph.gradient_override_map({'Relu': 'DeconvRelu'}):
+            conv_model = Convnet(sess,max_pool)
     elif sal_map_type.split('_')[0] == 'PlainSaliency':
-        conv_model = Convnet(sess)
-
+        conv_model = Convnet(sess,max_pool)
     else:
         raise Exception("Unknown saliency type")
 

@@ -3,7 +3,7 @@ import tensorflow as tf
 
 
 class Convnet(object):
-    def __init__(self, sess=None):
+    def __init__(self, sess=None, max_pool=False):
 
         self.layers_dic = {}
         self.parameters = []
@@ -22,6 +22,9 @@ class Convnet(object):
             self.labels = tf.placeholder(tf.float32, [None, self.n_labels])
 
         self.convlayers()
+        # ADD Max-pooling
+        if max_pool:
+            self.max_pooling()
         self.fc_layers()
 
         self.logits = self.fc2l
@@ -53,6 +56,13 @@ class Convnet(object):
             self.layers_dic['conv1_1'] = self.conv1
 
         self.convnet_out = self.conv1
+
+    def max_pooling(self):
+        with tf.name_scope('max_pool') as scope:
+            self.max_pool = tf.nn.max_pool(self.convnet_out, ksize=[1, 9,9, 1], strides=[1,1,1,1],padding='SAME')
+            self.layers_dic["max_pool"] = self.max_pool
+        self.convnet_out = self.max_pool
+
 
     def fc_layers(self):
 

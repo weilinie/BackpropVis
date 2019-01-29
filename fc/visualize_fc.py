@@ -17,6 +17,11 @@ image_dict = {'tabby': 281, 'laska': 356, 'mastiff': 243, 'panda': 388}
 def _GuidedReluGrad(op, grad):
     return tf.where(0. < grad, gen_nn_ops._relu_grad(grad, op.outputs[0]), tf.zeros(tf.shape(grad)))
 
+#ADD DECONV NET
+@ops.RegisterGradient("DeconvRelu")
+def _GuidedReluGrad(op, grad):
+    return tf.where(0. < grad, grad, tf.zeros(tf.shape(grad)))
+
 
 def visualize_fc():
     sal_map_type = "GuidedBackprop_maxlogit"  # change it to get different visualizations
@@ -56,6 +61,11 @@ def visualize_fc():
     if sal_map_type.split('_')[0] == 'GuidedBackprop':
         eval_graph = tf.get_default_graph()
         with eval_graph.gradient_override_map({'Relu': 'GuidedRelu'}):
+            fc_models = FC(sess)
+
+    elif sal_map_type.split('_')[0] == 'Deconv':
+        eval_graph = tf.get_default_graph()
+        with eval_graph.gradient_override_map({'Relu': 'DeconvRelu'}):
             fc_models = FC(sess)
 
     elif sal_map_type.split('_')[0] == 'PlainSaliency':
