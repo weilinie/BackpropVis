@@ -80,7 +80,7 @@ def visualize_fc():
     elif sal_map_type.split('_')[1] == 'maxlogit':
         sal_map = tf.gradients(fc_models.maxlogit, fc_models.imgs)[0]
     elif sal_map_type.split('_')[1] == 'randlogit':
-        sal_map = tf.gradients(fc_models.logits[random.randint(0, 999)], fc_models.imgs)[0]
+        sal_map = tf.gradients(fc_models.logits[:, random.randint(0, 999)], fc_models.imgs)[0]
     else:
         raise Exception("Unknown logit gradient type")
 

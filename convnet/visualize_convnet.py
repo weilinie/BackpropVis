@@ -79,7 +79,7 @@ def visualize_convnet():
     elif sal_map_type.split('_')[1] == 'maxlogit':
         sal_map = tf.gradients(conv_model.maxlogit, conv_model.imgs)[0]
     elif sal_map_type.split('_')[1] == 'randlogit':
-        sal_map = tf.gradients(conv_model.logits[random.randint(0, 999)], conv_model.imgs)[0]
+        sal_map = tf.gradients(conv_model.logits[:, random.randint(0, 999)], conv_model.imgs)[0]
     else:
         raise Exception("Unknown logit gradient type")
 

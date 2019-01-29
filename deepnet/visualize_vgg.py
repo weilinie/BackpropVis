@@ -69,7 +69,7 @@ def get_saliency(vgg, logit_type):
     elif logit_type == 'maxlogit':
         sal_map = tf.gradients(vgg.maxlogit, vgg.imgs)[0]
     elif logit_type == 'randlogit':
-        sal_map = tf.gradients(vgg.logits[random.randint(0, 999)], vgg.imgs)[0]
+        sal_map = tf.gradients(vgg.logits[:, random.randint(0, 999)], vgg.imgs)[0]
     else:
         raise Exception("Unknown logit gradient type")
     return sal_map
